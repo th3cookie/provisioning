@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [[ $(which wslview) ]]; then
+    BROWSER="wslview"
+else
+    BROWSER="firefox -p work"
+fi
+
+SITE=$(ssh -oStrictHostKeyChecking=no $@ "grep 'SBM_URL = ' /usr/local/cpanel/base/frontend/paper_lantern/r1redirect.php" 2> /dev/null | awk '{print $3}' | cut -d \" -f 2)
+if [[ -z ${SITE} ]]; then
+    SITE=$(ssh -oStrictHostKeyChecking=no $@ "grep 'Matched public key' /usr/sbin/r1soft/log/cdp.log" | tail -1 | awk '{print $7}' | cut -d / -f 7 | cut -d \' -f 1)
+fi
+
+echo ${SITE} | while read line; do ${BROWSER} ${line} >/dev/null 2>&1; done

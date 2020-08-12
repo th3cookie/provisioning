@@ -1,0 +1,21 @@
+# Home Assistant - Smart Home Hub
+homeassistant:
+  container_name: homeassistant
+  hostname: hass
+  restart: always
+  image: homeassistant/home-assistant
+  devices:
+    - /dev/ttyUSB0:/dev/ttyUSB0
+    - /dev/ttyUSB1:/dev/ttyUSB1
+    - /dev/ttyACM0:/dev/ttyACM0
+  volumes:
+    - ${USERDIR}/docker/homeassistant:/config
+    - /etc/localtime:/etc/localtime:ro
+    - ${USERDIR}/docker/shared:/shared
+  ports:
+    - "8123:8123"
+  privileged: true
+  environment:
+    - PUID=${PUID}
+    - PGID=${PGID}
+    - TZ=${TZ}

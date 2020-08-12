@@ -1,0 +1,19 @@
+# Radarr - Movie management
+# Set url_base in radarr settings if using PathPrefix
+radarr:
+  image: linuxserver/radarr
+  container_name: radarr
+  hostname: radarr
+  restart: unless-stopped
+  ports:
+    - ${RADARR_PORT}:7878
+  volumes:
+    - ${USERDIR}/docker/radarr:/config
+    - ${USERDIR}/Downloads:/downloads
+    - ${USERDIR}/mount/Video/Movies:/movies
+    - ${USERDIR}/docker/shared:/shared
+    - "/etc/localtime:/etc/localtime:ro"
+  environment:
+    PUID: ${PUID}
+    PGID: ${PGID}
+    TZ: ${TZ}

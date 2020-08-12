@@ -1,0 +1,13 @@
+# InfluxDB - Database for sensor data
+# Create influxdb.conf
+influxdb:
+image: influxdb
+container_name: influxdb
+hostname: influxdb
+restart: unless-stopped
+ports:
+  - ${INFLUXDB_PORT}:8086
+# command: -config /etc/influxdb/influxdb.conf
+volumes:
+  - ${USERDIR}/docker/influxdb/db:/var/lib/influxdb
+  # - ${USERDIR}/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro

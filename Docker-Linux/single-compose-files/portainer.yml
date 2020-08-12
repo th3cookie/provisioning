@@ -1,0 +1,15 @@
+#Portainer - WebUI for Containers
+portainer:
+  image: portainer/portainer
+  hostname: portainer
+  container_name: portainer
+  restart: unless-stopped
+  command: -H unix:///var/run/docker.sock
+  ports:
+    - ${PORTAINER_PORT}:9000
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ${USERDIR}/docker/portainer/data:/data
+    - ${USERDIR}/docker/shared:/shared
+  environment:
+    - TZ=${TZ}

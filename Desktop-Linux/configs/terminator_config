@@ -1,0 +1,184 @@
+[global_config]
+  enabled_plugins = TerminatorThemes, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child0]]]
+      fullscreen = False
+      last_active_term = 759b7e7b-c0e1-4e81-a002-09a5c8b347cb
+      last_active_window = True
+      maximised = True
+      order = 0
+      parent = ""
+      position = 0:0
+      size = 1920, 1021
+      title = sami@Sami-Fedora-Home-VM:~
+      type = Window
+    [[[child1]]]
+      order = 0
+      parent = child0
+      position = 958
+      ratio = 0.500261096606
+      type = HPaned
+    [[[terminal2]]]
+      order = 0
+      parent = child1
+      profile = PaulMillr
+      type = Terminal
+      uuid = 759b7e7b-c0e1-4e81-a002-09a5c8b347cb
+    [[[terminal3]]]
+      order = 1
+      parent = child1
+      profile = PaulMillr
+      type = Terminal
+      uuid = ba87bfc3-a87d-4270-8d2e-949c872fc584
+  [[default2]]
+    [[[child1]]]
+      parent = window0
+      profile = PaulMillr
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    palette = "#000000:#cd0000:#00cd00:#cdcd00:#0000ee:#cd00cd:#00cdcd:#e5e5e5:#7f7f7f:#ff0000:#00ff00:#ffff00:#5c5cff:#ff00ff:#00ffff:#ffffff"
+    scrollback_lines = 5000
+  [[Aco]]
+    background_color = "#1f1305"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#bae2fb"
+    foreground_color = "#b4e1fd"
+    palette = "#3f3f3f:#ff0883:#83ff08:#ff8308:#0883ff:#8308ff:#08ff83:#bebebe:#474747:#ff1e8e:#8eff1e:#ff8e1e:#0883ff:#8e1eff:#1eff8e:#c4c4c4"
+    scrollback_lines = 5000
+  [[Argonaut]]
+    background_color = "#0e1019"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#ff0018"
+    foreground_color = "#fffaf4"
+    palette = "#232323:#ff000f:#8ce10b:#ffb900:#008df8:#6d43a6:#00d8eb:#ffffff:#444444:#ff2740:#abe15b:#ffd242:#0092ff:#9a5feb:#67fff0:#ffffff"
+    scrollback_lines = 5000
+  [[Atom]]
+    background_color = "#161719"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#d0d0d0"
+    foreground_color = "#c5c8c6"
+    palette = "#000000:#fd5ff1:#87c38a:#ffd7b1:#85befd:#b9b6fc:#85befd:#e0e0e0:#000000:#fd5ff1:#94fa36:#f5ffa8:#96cbfe:#b9b6fc:#85befd:#e0e0e0"
+    scrollback_lines = 5000
+  [[Belafonte Day]]
+    background_color = "#d5ccba"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#45373c"
+    foreground_color = "#45373c"
+    palette = "#20111b:#be100e:#858162:#eaa549:#426a79:#97522c:#989a9c:#968c83:#5e5252:#be100e:#858162:#eaa549:#426a79:#97522c:#989a9c:#d5ccba"
+    scrollback_lines = 5000
+  [[Blazer]]
+    background_color = "#0d1926"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#d9e6f2"
+    foreground_color = "#d9e6f2"
+    palette = "#000000:#b87a7a:#7ab87a:#b8b87a:#7a7ab8:#b87ab8:#7ab8b8:#d9d9d9:#262626:#dbbdbd:#bddbbd:#dbdbbd:#bdbddb:#dbbddb:#bddbdb:#ffffff"
+    scrollback_lines = 5000
+  [[Candy]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    foreground_color = "#AAAAAA"
+    palette = "#2e3436:#fa2573:#a6e32d:#fc951e:#c48dff:#fa2573:#67d9f0:#f2f2f2:#555753:#fa2573:#8ae234:#fce94f:#729fcf:#fa2573:#34e2e2:#eeeeec"
+    scrollback_lines = 5000
+  [[Dark Pastel]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#bbbbbb"
+    foreground_color = "#ffffff"
+    palette = "#000000:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#bbbbbb:#555555:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#ffffff"
+    scrollback_lines = 5000
+  [[ENCOM]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#bbbbbb"
+    foreground_color = "#00a595"
+    palette = "#000000:#9f0000:#008b00:#ffd000:#0081ff:#bc00ca:#008b8b:#bbbbbb:#555555:#ff0000:#00ee00:#ffff00:#0000ff:#ff00ff:#00cdcd:#ffffff"
+    scrollback_lines = 5000
+  [[FirefoxDev]]
+    background_color = "#0e1011"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#708284"
+    foreground_color = "#7c8fa4"
+    palette = "#002831:#e63853:#5eb83c:#a57706:#359ddf:#d75cff:#4b73a2:#dcdcdc:#001e27:#e1003f:#1d9000:#cd9409:#006fc0:#a200da:#005794:#e2e2e2"
+    scrollback_lines = 5000
+  [[Hurtado]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#bbbbbb"
+    foreground_color = "#dbdbdb"
+    palette = "#575757:#ff1b00:#a5e055:#fbe74a:#496487:#fd5ff1:#86e9fe:#cbcccb:#262626:#d51d00:#a5df55:#fbe84a:#89beff:#c001c1:#86eafe:#dbdbdb"
+    scrollback_lines = 5000
+  [[PaulMillr]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#4d4d4d"
+    foreground_color = "#f2f2f2"
+    palette = "#2a2a2a:#ff0000:#79ff0f:#e7bf00:#396bd7:#b449be:#66ccff:#bbbbbb:#666666:#ff0080:#66ff66:#f3d64e:#709aed:#db67e6:#7adff2:#ffffff"
+    scrollback_lines = 5000
+  [[Pro]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#4d4d4d"
+    foreground_color = "#f2f2f2"
+    palette = "#000000:#990000:#00a600:#999900:#2009db:#b200b2:#00a6b2:#bfbfbf:#666666:#e50000:#00d900:#e5e500:#0000ff:#e500e5:#00e5e5:#e5e5e5"
+    scrollback_lines = 5000
+  [[Symfonic]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#dc322f"
+    foreground_color = "#ffffff"
+    palette = "#000000:#dc322f:#56db3a:#ff8400:#0084d4:#b729d9:#ccccff:#ffffff:#1b1d21:#dc322f:#56db3a:#ff8400:#0084d4:#b729d9:#ccccff:#ffffff"
+    scrollback_lines = 5000
+  [[Tomorrow Night Bright]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#eaeaea"
+    foreground_color = "#eaeaea"
+    palette = "#000000:#d54e53:#b9ca4a:#e7c547:#7aa6da:#c397d8:#70c0b1:#ffffff:#000000:#d54e53:#b9ca4a:#e7c547:#7aa6da:#c397d8:#70c0b1:#ffffff"
+    scrollback_lines = 5000
+  [[Venom]]
+    background_color = "#060d14"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#9ecfa2"
+    foreground_color = "#668198"
+    palette = "#2e3436:#e94759:#9ecfa2:#f3efa9:#00898d:#9c21b0:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    scrollback_lines = 5000
+  [[VibrantInk]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#ffffff"
+    foreground_color = "#ffffff"
+    palette = "#878787:#ff6600:#ccff04:#ffcc00:#44b4cc:#9933cc:#44b4cc:#f5f5f5:#555555:#ff0000:#00ff00:#ffff00:#0000ff:#ff00ff:#00ffff:#e5e5e5"
+    scrollback_lines = 5000
+  [[Wez]]
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#53ae71"
+    foreground_color = "#b3b3b3"
+    palette = "#000000:#cc5555:#55cc55:#cdcd55:#5555cc:#cc55cc:#7acaca:#cccccc:#555555:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#ffffff"
+    scrollback_lines = 5000
+  [[ayu]]
+    background_color = "#0f1419"
+    background_darkness = 0.9
+    background_type = transparent
+    cursor_color = "#f29718"
+    foreground_color = "#e6e1cf"
+    palette = "#000000:#ff3333:#b8cc52:#e7c547:#36a3d9:#f07178:#95e6cb:#ffffff:#323232:#ff6565:#eafe84:#fff779:#68d5ff:#ffa3aa:#c7fffd:#ffffff"
+    scrollback_lines = 5000

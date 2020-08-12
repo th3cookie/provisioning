@@ -1,0 +1,415 @@
+#Reference: https://github.com/htpcBeginner/docker-traefik/blob/master/docker-compose-t1.yml
+#Requirement: Set environmental variables: USERDIR, PUID, PGID, MYSQL_ROOT_PASSWORD, and TZ as explained in the reference.
+
+version: "3.7"
+
+############################# NETWORKS
+
+networks:
+  default:
+    driver: bridge
+
+############################# SERVICES
+
+services:
+
+############################# FRONTENDS
+
+  portainer:
+    image: portainer/portainer
+    hostname: portainer
+    container_name: portainer
+    restart: unless-stopped
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - ${PORTAINER_PORT}:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${USERDIR}/docker/portainer/data:/data
+    environment:
+      - TZ=${TZ}
+
+  # organizr:
+  #   container_name: organizr
+  #   hostname: organizr
+  #   restart: unless-stopped
+  #   image: linuxserver/organizr
+  #   volumes:
+  #     - ${USERDIR}/docker/organizr:/config
+  #   ports:
+  #     - ${ORGANIZR_PORT}:80
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+
+  # Jackett - Torrent proxy
+  # Set url_base in Jackett settings if using PathPrefix
+  jackett:
+    image: linuxserver/jackett
+    hostname: jackett
+    container_name: jackett
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - ${JACKETT_PORT}:9117
+    # network_mode: container:transmission-vpn
+    # depends_on:
+    # - transmission-vpn
+    volumes:
+      - ${USERDIR}/docker/jackett:/config
+      - ${USERDIR}/mount/Downloads/blackhole:/downloads
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+
+############################# DNS
+  
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+  # pihole:
+  #   container_name: pihole
+  #   hostname: pihole
+  #   image: pihole/pihole:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "53:53/tcp"
+  #     - "53:53/udp"
+  #     - "67:67/udp"
+  #     - "9020:80/tcp"
+  #     - "9021:443/tcp"
+  #   environment:
+  #     TZ: ${TZ}
+    # WEBPASSWORD: 'set a secure password here or it will be random'
+  # Volumes store your data between container upgrades
+  # volumes:
+  #   - ${USERDIR}/docker/pihole/:/etc/pihole/
+  #   - ${USERDIR}/docker/dnsmasq.d/:/etc/dnsmasq.d/
+  # dns:
+  #   - 127.0.0.1
+  #   - 1.1.1.1
+  # Recommended but not required (DHCP needs NET_ADMIN)
+  #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+  # cap_add:
+  #   - NET_ADMIN
+
+############################# DATABASE
+
+  # mariadb:
+  #   image: mariadb
+  #   container_name: mariadb
+  #   restart: unless-stopped
+  #   hostname: mariadb
+  #   networks:
+  #     - default
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ${USERDIR}/docker/mariadb/data:/var/lib/mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=qwerty
+  #     - MYSQL_DATABASE=test
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+
+  # InfluxDB - Database for sensor data
+  # Create influxdb.conf
+  # influxdb:
+  #   image: influxdb
+  #   container_name: influxdb
+  #   hostname: influxdb
+  #   restart: unless-stopped
+  #   ports:
+  #     - ${INFLUXDB_PORT}:8086
+  #   # command: -config /etc/influxdb/influxdb.conf
+  #   volumes:
+  #     - ${USERDIR}/docker/influxdb/db:/var/lib/influxdb
+  #     # - ${USERDIR}/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+
+  # When connecting to Mariadb from phpmyadmin, use 'mariadb' as the hostname
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin:latest
+  #   container_name: phpmyadmin
+  #   hostname: phpmyadmin
+  #   restart: unless-stopped
+  #   networks:
+  #     - default
+  #   ports:
+  #     - ${PHPMYADMIN_PORT}:80
+  #   environment:
+  #     - PMA_PORT=3306
+  #     - PMA_ARBITRARY=1
+  #     - PMA_HOST=mariadb
+  #   depends_on:
+  #     - mariadb
+
+  # Grafana - Graphical data visualization for InfluxDB data
+  # grafana:
+  #   image: grafana/grafana
+  #   container_name: grafana
+  #   hostname: grafana
+  #   restart: unless-stopped
+  #   networks:
+  #     - default
+  #   ports:
+  #     - ${GRAFANA_PORT}:3000
+  #   user: "0"
+  #   volumes:
+  #     - ${USERDIR}/docker/grafana:/var/lib/grafana
+  #   environment:
+  #     GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel" 
+
+  # Varken - Monitor Plex, Sonarr, Radarr, and Other Data
+  # varken:
+  #   image: boerderij/varken
+  #   hostname: varken
+  #   container_name: varken
+  #   restart: unless-stopped
+  #   networks:
+  #     - default
+  #   volumes:
+  #     - ${USERDIR}/docker/varken:/config
+  #   environment:
+  #     PUID: ${PUID}
+  #     PGID: ${PGID}
+  #     TZ: ${TZ}
+  #     VRKN_GLOBAL_SONARR_SERVER_IDS: 1
+  #     VRKN_GLOBAL_RADARR_SERVER_IDS: 1
+  #     VRKN_GLOBAL_TAUTULLI_SERVER_IDS: 1
+  #     VRKN_GLOBAL_OMBI_SERVER_IDS: "false"
+  #     VRKN_GLOBAL_SICKCHILL_SERVER_IDS: "false"
+  #     VRKN_INFLUXDB_URL: ${SERVER_IP}
+  #     VRKN_INFLUXDB_PORT: 8086
+  #     VRKN_INFLUXDB_SSL: "false"
+  #     VRKN_INFLUXDB_VERIFY_SSL: "false"
+  #     VRKN_INFLUXDB_USERNAME: ${VARKEN_USER}
+  #     VRKN_INFLUXDB_PASSWORD: ${VARKEN_PASS}
+  #     VRKN_TAUTULLI_1_URL: ${SERVER_IP}:${TAUTULLI_PORT}
+  #     VRKN_TAUTULLI_1_FALLBACK_IP: 1.1.1.1
+  #     VRKN_TAUTULLI_1_APIKEY: ${TAUTULLI_API_KEY}
+  #     VRKN_TAUTULLI_1_SSL: "false"
+  #     VRKN_TAUTULLI_1_VERIFY_SSL: "false"
+  #     VRKN_TAUTULLI_1_GET_ACTIVITY: "true"
+  #     VRKN_TAUTULLI_1_GET_ACTIVITY_RUN_SECONDS: 30
+  #     VRKN_TAUTULLI_1_GET_STATS: "true"
+  #     VRKN_TAUTULLI_1_GET_STATS_RUN_SECONDS: 3600
+  #     VRKN_SONARR_1_URL: ${SERVER_IP}:${SONARR_PORT}
+  #     VRKN_SONARR_1_APIKEY: ${SONARR_API_KEY}
+  #     VRKN_SONARR_1_SSL: "false"
+  #     VRKN_SONARR_1_VERIFY_SSL: "false"
+  #     VRKN_SONARR_1_MISSING_DAYS: 7
+  #     VRKN_SONARR_1_MISSING_DAYS_RUN_SECONDS: 300
+  #     VRKN_SONARR_1_FUTURE_DAYS: 1
+  #     VRKN_SONARR_1_FUTURE_DAYS_RUN_SECONDS: 300
+  #     VRKN_SONARR_1_QUEUE: "true"
+  #     VRKN_SONARR_1_QUEUE_RUN_SECONDS: 300
+  #     VRKN_RADARR_1_URL: ${SERVER_IP}:${RADARR_PORT}
+  #     VRKN_RADARR_1_APIKEY: ${RADARR_API_KEY}
+  #     VRKN_RADARR_1_SSL: "false"
+  #     VRKN_RADARR_1_VERIFY_SSL: "false"
+  #     VRKN_RADARR_1_QUEUE: "true"
+  #     VRKN_RADARR_1_QUEUE_RUN_SECONDS: 300
+  #     VRKN_RADARR_1_GET_MISSING: "true"
+  #     VRKN_RADARR_1_GET_MISSING_RUN_SECONDS: 300
+
+############################# DOWNLOADERS
+
+# TransmissionBT - Torrent Downloader
+# ONLY ACCESSIBLE THROUGH https://domain.com/transmission/web/ if using PathPrefix
+  transmission-vpn:
+    image: haugene/transmission-openvpn
+    container_name: transmission-vpn
+    hostname: transmission
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      # DO NOT FORWARD THIS PORT ON FROM YOUR ROUTER - HEAR THESE CRIES!!!!!
+      - ${TRANSMISSION_PORT}:9091
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${USERDIR}/docker/transmission-vpn/data:/data
+      - ${USERDIR}/docker/transmission-vpn/config:/config
+      - ${USERDIR}/mount/Downloads:/downloads
+    environment:
+      OPENVPN_PROVIDER: ${VPN_PROVIDER}
+      OPENVPN_USERNAME: ${VPN_USER}
+      OPENVPN_PASSWORD: ${VPN_PASS}
+      # This next one is optional. See here for more details -> https://haugene.github.io/docker-transmission-openvpn/run-from-docker-registry/
+      # - OPENVPN_CONFIG="YYYYYYYYYYY"
+      OPENVPN_OPTS: --inactive 3600 --ping 10 --ping-exit 60
+      LOCAL_NETWORK: ${LOCAL_SUBNET}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      UMASK_SET: 002
+      TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: "false"
+      TRANSMISSION_RPC_HOST_WHITELIST_ENABLED: "false"
+      TRANSMISSION_RPC_HOST_WHITELIST: "127.0.0.1,172.16.0.0/12,${LOCAL_SUBNET}"
+      TRANSMISSION_RPC_WHITELIST_ENABLED: "false"
+      TRANSMISSION_RPC_WHITELIST: "127.0.0.1,172.16.0.0/12,${LOCAL_SUBNET}"
+      # TRANSMISSION_RPC_USERNAME: "${TRANSMISSION_USER}"
+      # TRANSMISSION_RPC_PASSWORD: "${TRANSMISSION_PASS}"
+      TRANSMISSION_UMASK: 002
+      TRANSMISSION_RATIO_LIMIT: 0
+      TRANSMISSION_RATIO_LIMIT_ENABLED: "true"
+      TRANSMISSION_ALT_SPEED_ENABLED: "false"
+      # TRANSMISSION_ALT_SPEED_DOWN: 2000
+      # TRANSMISSION_ALT_SPEED_UP: 15
+      TRANSMISSION_SPEED_LIMIT_DOWN: 6000
+      TRANSMISSION_SPEED_LIMIT_DOWN_ENABLED: "true"
+      TRANSMISSION_SPEED_LIMIT_UP: 30
+      TRANSMISSION_SPEED_LIMIT_UP_ENABLED: "true"
+      TRANSMISSION_INCOMPLETE_DIR: /downloads/incomplete
+      TRANSMISSION_INCOMPLETE_DIR_ENABLED: "true"
+      TRANSMISSION_WATCH_DIR: /downloads
+      TRANSMISSION_WATCH_DIR_ENABLED: "true"
+      TRANSMISSION_DOWNLOAD_DIR: /downloads/completed
+      TRANSMISSION_DOWNLOAD_QUEUE_SIZE: 50
+  
+############################# PVRS
+
+  # Radarr - Movie management
+  # Set url_base in radarr settings if using PathPrefix
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    hostname: radarr
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - ${RADARR_PORT}:7878
+    volumes:
+      - ${USERDIR}/docker/radarr:/config
+      - ${USERDIR}/mount/Downloads:/downloads
+      - ${USERDIR}/mount/Video/Movies:/movies
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+  
+  # Sonarr - TV Shows management
+  # Set url_base in sonarr settings if using PathPrefix
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    hostname: sonarr
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - ${SONARR_PORT}:8989
+    volumes:
+      - ${USERDIR}/docker/sonarr:/config
+      - ${USERDIR}/mount/Downloads:/downloads
+      - ${USERDIR}/mount/Video/TV:/tv
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+  
+############################# MEDIA
+
+  # Plex - Media Server
+  # Docker Run command:
+  # docker run -d --name plexms -h plexms --restart unless-stopped \
+  # -p 32400:32400/tcp -p 3005:3005/tcp -p 3005:3005/tcp -p 8324:8324/tcp -p 32469:32469/tcp \
+  # -p 1900:1900/udp -p 32410:32410/udp -p 32412:32412/udp -p 32413:32413/udp -p 32414:32414/udp \
+  # -p 33400:33400 -v ${USERDIR}/docker/plexms:/config -v ${USERDIR}/mount/Video:/data \
+  # -v /dev/shm:/transcode -v ${USERDIR}/docker/shared:/shared -e TZ=${TZ} -e HOSTNAME="nucPlex" \
+  # -e PLEX_CLAIM=${PLEX_CLAIM} -e PLEX_UID=${PUID} -e PLEX_GID=${PGID} \
+  # -e ADVERTISE_IP=http://${SERVER_IP}:${PLEX_PORT}/ --network=default plexinc/pms-docker:latest
+  plexms:
+    image: plexinc/pms-docker:latest
+    container_name: plexms
+    hostname: plexms
+    restart: unless-stopped
+    network_mode: host
+    # networks:
+    #   - default
+    ports:
+      - ${PLEX_PORT}:32400/tcp
+      - "3005:3005/tcp"
+      - "8324:8324/tcp"
+      - "32469:32469/tcp"
+      - "1900:1900/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+      - ${PLEX_WEB_TOOLS_PORT}:33400
+    volumes:
+      - ${USERDIR}/docker/plexms:/config
+      - ${USERDIR}/mount/Video:/data
+      - /dev/shm:/transcode # Offload transcoding to RAM if you have enough RAM. Otherwise, disk:
+      # - ${USERDIR}/Downloads/plex_tmp:/transcode
+    environment:
+      TZ: ${TZ}
+      HOSTNAME: "nucPlex"
+      PLEX_CLAIM: ${PLEX_CLAIM}
+      PLEX_UID: ${PUID}
+      PLEX_GID: ${PGID}
+      ADVERTISE_IP: http://${SERVER_IP}:${PLEX_PORT}/
+
+  # Tautulli - Previously PlexPy. Plex statistics and monitoring
+  # Set HTTP Root in Tautulli settings if using PathPrefix
+  # tautulli:
+  #   image: linuxserver/tautulli
+  #   container_name: tautulli
+  #   hostname: tautulli
+  #   restart: unless-stopped
+  #   networks:
+  #     - default
+  #   ports:
+  #     - ${TAUTULLI_PORT}:8181
+  #   volumes:
+  #     - ${USERDIR}/docker/tautulli/config:/config
+  #     - ${USERDIR}/docker/tautulli/logs:/logs:ro
+  #   environment:
+  #     PUID: ${PUID}
+  #     PGID: ${PGID}
+  #     TZ: ${TZ}
+
+  # Plex-Sync - For Syncing watched status between plex servers
+  # plex-sync:
+  #   image: patsissons/plex-sync
+  #   container_name: plex-sync
+  #   environment:
+  #     INITIAL_RUN: "true"
+  #     CRON_SCHEDULE: '*/5 * * * *'
+  #     SECTION_MAPS: ${SYN_PLEX}/${SYN_PLEX_HOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_HOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_TVSHOWS} ${NUC_PLEX}/${NUC_PLEX_TVSHOWS} | ${SYN_PLEX}/${SYN_PLEX_BOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_BOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_KOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_KOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_TOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_TOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_DOCMOVIES} ${NUC_PLEX}/${NUC_PLEX_DOCMOVIES} | ${SYN_PLEX}/${SYN_PLEX_DOCSHOWS} ${NUC_PLEX}/${NUC_PLEX_DOCSHOWS} | ${SYN_PLEX}/${SYN_PLEX_KIDSMOVIES} ${NUC_PLEX}/${NUC_PLEX_KIDSMOVIES} | ${SYN_PLEX}/${SYN_PLEX_INTERNATIONAL} ${NUC_PLEX}/${NUC_PLEX_INTERNATIONAL}
+  #   restart: unless-stopped
+
+############################# MEDIA FILE MANAGEMENT
+
+  # Bazarr - Subtitle Management
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    hostname: bazarr
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - ${BAZARR_PORT}:6767
+    volumes:
+      - ${USERDIR}/docker/bazarr:/config
+      - ${USERDIR}/mount/Video/Movies:/movies
+      - ${USERDIR}/mount/Video/TV:/tv
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}

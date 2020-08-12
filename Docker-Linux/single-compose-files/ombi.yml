@@ -1,0 +1,15 @@
+# Ombi – Accept Requests for your Media Server
+ombi:
+  container_name: ombi
+  hostname: ombi
+  restart: always
+  image: linuxserver/ombi
+  volumes:
+    - ${USERDIR}/docker/ombi:/config
+    - ${USERDIR}/docker/shared:/shared
+  ports:
+    - "3579:3579"
+  environment:
+    - PUID=${PUID}
+    - PGID=${PGID}
+    - TZ=${TZ}

@@ -1,0 +1,18 @@
+# Bazarr - Subtitle Management
+bazarr:
+  image: linuxserver/bazarr
+  container_name: bazarr
+  hostname: bazarr
+  restart: unless-stopped
+  networks:
+    - default
+  ports:
+    - ${BAZARR_PORT}:6767
+  volumes:
+    - ${USERDIR}/docker/bazarr:/config
+    - ${USERDIR}/mount/Video/Movies:/movies
+    - ${USERDIR}/mount/Video/TV:/tv
+  environment:
+    PUID: ${PUID}
+    PGID: ${PGID}
+    TZ: ${TZ}

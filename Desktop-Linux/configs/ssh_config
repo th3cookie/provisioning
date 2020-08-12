@@ -1,0 +1,121 @@
+# Personal Configs
+
+Host pfsense
+	HostName pfsense.samishakir.com
+
+Host tplink
+	HostName tplink-sw01.samishakir.com
+	KexAlgorithms +diffie-hellman-group1-sha1
+	HostKeyAlgorithms +ssh-dss
+	Ciphers +aes256-cbc
+	User admin
+	IdentityFile ~/.ssh/id_rsa
+
+Host crucialvps
+	HostName crucial.samishakir.com
+
+Host docker
+	HostName docker.samishakir.com
+	User sami
+
+Host nas
+	HostName nas.samishakir.com
+	User admin
+	Port 7022
+
+Host pihole
+	HostName pihole.samishakir.com
+
+Host github
+	HostName github.com
+
+# Work Configs
+
+Host oob01
+	HostName oob01.eqsy3.digitalpacific.com.au
+	Port 2274
+	User sshakir
+
+Host puppet02
+	HostName puppet02.digitalpacific.com.au
+	User SShakir
+
+Host puppet03
+	HostName puppet03.digitalpacific.com.au
+	User SShakir
+
+Host staff01
+	HostName staff01.digitalpacific.com.au
+	User SShakir
+
+Host syslog01
+	HostName syslog01.digitalpacific.com.au
+	User SShakir
+
+Host rr01
+	HostName rapidrestore-workspace.int.digitalpacific.com.au
+
+Host rr02
+	HostName rapidrestore-workspace02.int.digitalpacific.com.au
+
+Host rr03
+	HostName rapidrestore-workspace03.int.digitalpacific.com.au
+
+Host rr04
+	HostName rapidrestore-workspace04.int.digitalpacific.com.au
+
+Host rr05
+	HostName rapidrestore-workspace05.int.digitalpacific.com.au
+
+Host rr06
+	HostName rapidrestore-workspace06.int.digitalpacific.com.au
+
+Host ded*
+	User root
+	CanonicalizeHostname always
+	CanonicalDomains smartservers.com.au digitalpacific.com.au
+	CanonicalizeFallbackLocal yes
+
+Host cpdev
+	HostName cpanel-dev.ha-node.net
+	User root
+
+Host dsw*
+	User sshakir
+
+Host fw01.ded.apdcsy1.as55803.net.au
+	User sshakir
+
+Host web03
+	HostName web03.digitalpacific.com.au
+	IdentityFile ~/.ssh/id_rsa_work
+	User root
+
+Host web02
+	HostName web02.digitalpacific.com.au
+	IdentityFile ~/.ssh/id_rsa_work
+	User root
+
+Host web.dp
+	HostName web.digitalpacific.com.au
+
+Host dir01
+	HostName dir01.digitalpacific.com.au
+	ForwardX11 yes
+	User root
+
+# PUT NEW ONES BEFORE THIS ENTRY
+
+Host vps* vmcp* vmres* vmsrv* web* nxsrv* opstools vmse* *.digitalpacific.com.au *.smartservers.com.au *.auserver.com.au *.digitalpacific.com *.ha-node.net *.crucialx.net *.avs.com.au *.avs.net.au *.crucial.com.au *.aumanaged.com.au *.clusterdns.net *.aumanaged.com *.mailcluster.com.au *.hostopia.com.au *.panthur.com *.panthur.com.au *.web-servers.com.au *.stealth-servers.com.au *.yourdns.com.au
+	User root
+
+Host *
+	ForwardAgent yes
+	KeepAlive yes
+	ServerAliveInterval 60
+	AddressFamily inet
+	KexAlgorithms +diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group14-sha1
+	Ciphers +aes192-ctr,aes256-ctr
+	MACs +hmac-sha2-256,hmac-sha2-512
+	StrictHostKeyChecking ask
+	User root

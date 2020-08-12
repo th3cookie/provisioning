@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ $(which wslview) ]]; then
+    BROWSER="wslview"
+else
+    BROWSER="firefox -p work"
+fi
+
+ssh -oStrictHostKeyChecking=no $@ 'whmapi1 create_user_session user=root service=whostmgrd locale=en' | grep url | awk '{print $2}' | while read line; do ${BROWSER} ${line} >/dev/null 2>&1; done &

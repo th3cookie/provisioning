@@ -1,0 +1,19 @@
+# Sonarr - TV Shows management
+# Set url_base in sonarr settings if using PathPrefix
+sonarr:
+  image: linuxserver/sonarr
+  container_name: sonarr
+  hostname: sonarr
+  restart: unless-stopped
+  ports:
+    - ${SONARR_PORT}:8989
+  volumes:
+    - ${USERDIR}/docker/sonarr:/config
+    - ${USERDIR}/Downloads:/downloads
+    - ${USERDIR}/mount/Video/TV:/tv
+    - ${USERDIR}/docker/shared:/shared
+    - "/etc/localtime:/etc/localtime:ro"
+  environment:
+    PUID: ${PUID}
+    PGID: ${PGID}
+    TZ: ${TZ}
