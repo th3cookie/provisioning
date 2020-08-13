@@ -70,6 +70,14 @@ Host rr05
 Host rr06
 	HostName rapidrestore-workspace06.int.digitalpacific.com.au
 
+Host sw01.hq
+	HostName sw01.hq.as55803.net.au
+	User sshakir
+
+Host fw01.hq
+	HostName fw01.hq.as55803.net.au
+	User sshakir
+
 Host ded*
 	User root
 	CanonicalizeHostname always
