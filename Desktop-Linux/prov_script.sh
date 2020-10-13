@@ -91,6 +91,11 @@ fi
 if [[ ${WORKPC} =~ [Yy] ]]; then
     # .bash_aliases for work
     cat << EOF >> ${HOME_DIR}/.bash_aliases
+function torhost() {
+        TOR=\$(host \${1} | grep -oP '(?<=vlan).*' | cut -d '.' -f 2-)
+        TOR2=\${TOR::-1}
+        ssh \${TOR2}
+}
 function hosted() {
 	host \$1 | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | xargs host | awk '{print \$5}' | bash -ic "xargs whm"
 }
@@ -101,6 +106,19 @@ function sslchk() {
 }
 function fixpup() {
     echo "Doing puppet manifest checks - Lint and Parser..."; echo "If there is no output below, everything is fine."; echo "-------------------------------------------------"; puppet-lint \$1; puppet parser validate \$1;
+}
+function mxtoolbox() {
+        wslview "https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a\${1}&run=toolpage" &
+}
+function ssa() {
+        eval \$(ssh-agent -s)
+        ssh-add ~/.ssh/id_rsa*
+}
+function foreman() {
+        wslview "https://puppet02.digitalpacific.com.au/hosts/\${1}/edit#params" &
+}
+function jira() {
+        wslview "https://hostopia-au.atlassian.net/browse/\${1}" &
 }
 EOF
 else
@@ -269,11 +287,6 @@ alias systemctl='sudo systemctl'
 alias copy='xclip -sel clip'
 alias spotify='spotify &'
 alias python='python3.8'
-function torhost() {
-        TOR=\$(host \${1} | grep -oP '(?<=vlan).*' | cut -d '.' -f 2-)
-        TOR2=\${TOR::-1}
-        ssh \${TOR2}
-}
 EOF
 
 . ${HOME_DIR}/.bash_aliases
