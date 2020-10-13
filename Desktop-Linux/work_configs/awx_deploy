@@ -1,0 +1,41 @@
+#!/bin/bash
+# Deploys billing git
+
+echo "Sleeping for 3s so you can escape..."
+sleep 3
+
+case $1 in
+	'dp')
+		remote_host="billing.digitalpacific.com.au"
+		;;
+	'crucial')
+		remote_host="control.crucial.com.au"
+		;;
+	'panthur')
+		remote_host="members.panthur.com.au"
+		;;
+	'anchor')
+		remote_host="billing.anchor.com.au"
+		;;
+	'web24')
+		remote_host="control.web24.com.au"
+		;;
+	'all')
+		bash $0 dp
+		bash $0 crucial
+		bash $0 panthur
+		bash $0 anchor
+		bash $0 web24
+		exit 0
+		;;
+	*)
+		echo "Error: no host selected"
+		exit 1
+		;;
+esac
+
+# tower-cli job_template list
+# prod
+tower-cli job launch -J 12 --monitor -f human -e "selected_host: ${remote_host}"
+# dev
+# tower-cli job launch -J 13 --monitor -f human -e "selected_host: ${remote_host}"
