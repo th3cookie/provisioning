@@ -1,10 +1,10 @@
 # Personal Configs
 
-Host pfsense
+Host pfsense 10.0.0.1 10.0.2.1 10.0.3.1 10.0.4.1
 	HostName pfsense.samishakir.com
 
-Host tplink
-	HostName tplink-sw01.samishakir.com
+Host tplink 10.0.0.254
+	HostName tplink.samishakir.com
 	KexAlgorithms +diffie-hellman-group1-sha1
 	HostKeyAlgorithms +ssh-dss
 	Ciphers +aes256-cbc
@@ -18,12 +18,12 @@ Host docker
 	HostName docker.samishakir.com
 	User sami
 
-Host nas
+Host nas 10.0.0.3
 	HostName nas.samishakir.com
 	User admin
 	Port 7022
 
-Host pihole
+Host pihole 10.0.0.5
 	HostName pihole.samishakir.com
 
 Host github
