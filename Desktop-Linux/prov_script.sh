@@ -18,7 +18,6 @@ read -p 'Is this a work desktop [Y/y]? ' WORKPC
 read -p 'Please set your computer hostname: ' PC_HOSTNAME
 hostnamectl set-hostname ${PC_HOSTNAME}
 read -p 'Git Config username: ' GIT_USERNAME
-read -p 'Git Config Email: ' GIT_EMAIL
 read -p 'Would you like to automatically git pull all branches on shell login? [Y/y] ' AUTO_GIT_PULL
 
 if [[ ! ${WORKPC} =~ [Yy] ]]; then
@@ -70,10 +69,10 @@ done
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 HOME_DIR=/home/${REAL_USER}
 GIT_DIR=${HOME_DIR}/git
-mkdir $GIT_DIR
+mkdir -p $GIT_DIR/work $GIT_DIR/personal
 chown -R $REAL_USER:$REAL_USER $GIT_DIR
 chmod 755 $GIT_DIR
-mkdir -p ${HOME_DIR}/work ${HOME_DIR}/Downloads /mnt/NAS/Samis_folder ${HOME_DIR}/.config/terminator/plugins
+mkdir -p ${HOME_DIR}/Downloads /mnt/NAS/Samis_folder ${HOME_DIR}/.config/terminator/plugins
 
 # Installing required packages
 $INSTALL_COMMAND update
@@ -83,6 +82,10 @@ snapd grub-customizer terminator
 if [[ $? -ne 0 ]]; then
     echo "Could not download some/all of the packages, please check package manager history."
 fi
+
+cp $SCRIPT_DIR/configs/.gitconfig_global ${HOME_DIR}/.gitconfig
+cp $SCRIPT_DIR/configs/.gitconfig_personal ${GIT_DIR}/personal/.gitconfig
+cp $SCRIPT_DIR/configs/.gitconfig_work ${GIT_DIR}/work/.gitconfig
 
 ##################
 ### Work Stuff ###
@@ -312,7 +315,6 @@ ssh-add ${HOME_DIR}/.ssh/sami-openssh-private-key.ppk
 
 cd ${HOME_DIR}/git
 git config --global user.name "${GIT_USERNAME}"
-git config --global user.email "${GIT_EMAIL}"
 git config --global core.excludesfile ${HOME_DIR}/git/.gitignore_global
 echo ".vscode" | tee -a ${HOME_DIR}/git/.gitignore_global
 

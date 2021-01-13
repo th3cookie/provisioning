@@ -1,0 +1,21 @@
+[user]
+	name = Sami Shakir
+
+[core]
+	excludesfile = /c/xampp/apache/git/.gitignore_global
+
+[init]
+	templatedir = ~/.git_template
+
+; These will include git email depending on if i am in my work git dir or personal git dir. Adjust as necessary.
+[includeIf "gitdir:~/git/work/"]
+	path = ~/git/work/.gitconfig
+
+[includeIf "gitdir:~/git/personal/"]
+	path = ~/git/personal/.gitconfig
+
+[includeIf "gitdir:/c/Users/Sami-Win10-PC/git/work/"]
+	path = ~/git/work/.gitconfig
+
+[includeIf "gitdir:/c/Users/Sami-Win10-PC/git/personal/"]
+	path = ~/git/personal/.gitconfig
