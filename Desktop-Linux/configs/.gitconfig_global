@@ -19,3 +19,9 @@
 
 [includeIf "gitdir:/c/Users/Sami-Win10-PC/git/personal/"]
 	path = ~/git/personal/.gitconfig
+
+[includeIf "gitdir:/c/xampp/apache/git/work/"]
+	path = ~/git/work/.gitconfig
+
+[includeIf "gitdir:/c/xampp/apache/git/personal/"]
+	path = ~/git/personal/.gitconfig
