@@ -93,6 +93,7 @@ cp $SCRIPT_DIR/configs/.gitconfig_work ${GIT_DIR}/work/.gitconfig
 
 if [[ ${WORKPC} =~ [Yy] ]]; then
     # .bash_aliases for work
+	### NOTE: ESCAPE ANY "$" SYMBOLS! ###
     cat << EOF >> ${HOME_DIR}/.bash_aliases
 function torhost() {
         TOR=\$(host \${1} | grep -oP '(?<=vlan).*' | cut -d '.' -f 2-)
@@ -122,6 +123,9 @@ function foreman() {
 }
 function jira() {
         wslview "https://hostopia-au.atlassian.net/browse/\${1}" &
+}
+function geopeeker() {
+        wslview "https://geopeeker.com/fetch/?url=\${1}" &
 }
 EOF
 else
