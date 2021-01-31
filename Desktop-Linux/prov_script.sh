@@ -86,6 +86,8 @@ fi
 cp $SCRIPT_DIR/configs/.gitconfig_global ${HOME_DIR}/.gitconfig
 cp $SCRIPT_DIR/configs/.gitconfig_personal ${GIT_DIR}/personal/.gitconfig
 cp $SCRIPT_DIR/configs/.gitconfig_work ${GIT_DIR}/work/.gitconfig
+cp $SCRIPT_DIR/configs/.vimrc ${HOME_DIR}/
+cp $SCRIPT_DIR/configs/ssh_config ${HOME_DIR}/.ssh/config
 
 ##################
 ### Work Stuff ###
@@ -140,10 +142,8 @@ EOF
         echo -e "Could not download openvpn profile and SSH keys from NAS.\nCheck if you can mount cifs or not."
     else
         cp /mnt/NAS/Samis_folder/ops/hostopia.ovpn ${HOME_DIR}/work
-        cp $SCRIPT_DIR/configs/.vimrc ${HOME_DIR}/
         cp /mnt/NAS/Samis_folder/ops/ssh_keys/sami-openssh-private-key.ppk ${HOME_DIR}/.ssh/sami-openssh-private-key.ppk
         cp /mnt/NAS/Samis_folder/ops/ssh_keys/Work/SShakir-openssh-private-key ${HOME_DIR}/.ssh/SShakir-openssh-private-key
-        cp $SCRIPT_DIR/configs/ssh_config ${HOME_DIR}/.ssh/config
         sudo chmod 600 ${HOME_DIR}/.ssh/sami-openssh-private-key.ppk ${HOME_DIR}/.ssh/SShakir-openssh-private-key ${HOME_DIR}/.ssh/config
         sudo chown $REAL_USER. ${HOME_DIR}/.ssh/SShakir-openssh-private-key ${HOME_DIR}/.ssh/sami-openssh-private-key.ppk ${HOME_DIR}/.ssh/config
         cp /mnt/NAS/Samis_folder/ops/prov_apps/* ${HOME_DIR}/Downloads/

@@ -91,6 +91,16 @@ Host cpdev
 Host dsw*
 	User sshakir
 
+Host tor*.syd1*
+	User sshakir
+	CanonicalizeHostname yes
+	CanonicalDomains as55803.net.au
+
+Host tor*.mel1*
+	User sshakir
+	CanonicalizeHostname yes
+	CanonicalDomains as55803.net.au
+
 Host fw01.ded.apdcsy1.as55803.net.au
 	User sshakir
 
