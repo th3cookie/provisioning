@@ -265,5 +265,5 @@ cat << EOF | sudo tee -a /etc/crontab
 0 4 * * * sami cd ${USERDIR}/docker; /usr/local/bin/docker-compose pull; /usr/local/bin/docker-compose up -d --remove-orphans
 @reboot sami cd ${USERDIR}/docker; /usr/local/bin/docker-compose up -d
 0 3 * * * sami /usr/bin/docker system prune -af  --filter "until=$((30*24))h"
-*/30 * * * * root [[ $(grep '/home/sami/mount/' /proc/mounts | wc -l) -lt 3 ]] && mount -a && logger "mounted NAS"
+*/10 * * * * root if [ $(grep '/home/sami/mount/' /proc/mounts | wc -l) -lt 3 ]; then mount -a; logger "mounted NAS"; fi
 EOF
