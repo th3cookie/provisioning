@@ -260,8 +260,10 @@ sudo chmod +x /etc/cron.weekly/docker-backup.sh
 chmod +x ./parse-yaml.py
 sudo ${PY_VERSION} ./parse-yaml.py
 
-cat << EOF | sudo tee -a /etc/cron.d/docker_crons
+cat << EOF | sudo tee -a /etc/crontab
+
 0 4 * * * sami cd ${USERDIR}/docker; /usr/local/bin/docker-compose pull; /usr/local/bin/docker-compose up -d --remove-orphans
 @reboot sami cd ${USERDIR}/docker; /usr/local/bin/docker-compose up -d
-*/30 * * * * root [[ $(grep '/home/sami/mount/' /proc/mounts | wc -l) -lt 3 ]] && sudo mount -a && logger "mounted NAS"
+0 3 * * * sami /usr/bin/docker system prune -af  --filter "until=$((30*24))h"
+*/30 * * * * root [[ $(grep '/home/sami/mount/' /proc/mounts | wc -l) -lt 3 ]] && mount -a && logger "mounted NAS"
 EOF
