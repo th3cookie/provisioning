@@ -129,6 +129,9 @@ function jira() {
 function geopeeker() {
         wslview "https://geopeeker.com/fetch/?url=\${1}" &
 }
+function pagerduty() {
+        wslview "https://digitalpacific.pagerduty.com/incidents/\${1}/timeline" &
+}
 EOF
 else
     # If not a work PC...
