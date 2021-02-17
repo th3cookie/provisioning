@@ -15,6 +15,7 @@ fi
 
 # Read user input and store in variables
 read -p 'Is this a work desktop [Y/y]? ' WORKPC
+read -p 'Is this a WSL2 machine [Y/y]? ' WSL
 read -p 'Please set your computer hostname: ' PC_HOSTNAME
 hostnamectl set-hostname ${PC_HOSTNAME}
 read -p 'Git Config username: ' GIT_USERNAME
@@ -275,6 +276,23 @@ ssh-add ~/.ssh/sami-openssh-private-key.ppk &> /dev/null
 ssh-add ~/.ssh/SShakir-openssh-private-key &> /dev/null
 
 EOF
+
+# If this is running in WSL2, add the following ssh-agent code to .bashrc instead:
+if [[ ${WSL} =~ [Yy] ]]; then
+	cat << EOF >> ${HOME_DIR}/.bashrc
+# SSH Stuff
+pkill ssh-agent
+if ! pgrep ssh-agent > /dev/null; then
+  rm -f /tmp/ssh-auth-sock
+  eval "\$(ssh-agent -s -a /tmp/ssh-auth-sock)"
+  ssh-add ~/.ssh/id_rsa
+  ssh-add ~/.ssh/id_rsa_work
+else
+  export SSH_AUTH_SOCK=/tmp/ssh-auth-sock
+fi
+EOF
+	sed -i "s/LANG=.*/LANG=en_US.UTF-8/" /etc/default/locale
+fi
 
 if [[ ${AUTO_GIT_PULL} =~ [Yy] ]]; then
     # Comment the below if the user is different
