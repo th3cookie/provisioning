@@ -328,9 +328,9 @@ EOF
 IFS='' read -r -d '' SHELL_LAYOUT <<'EOF'
 export PS1="[\[$(tput sgr0)\]\[\033[38;5;203m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;119m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]]\\$ \[$(tput sgr0)\]"
 EOF
-echo "# Shell prompt layout" | tee -a file
-echo $SHELL_LAYOUT | tee -a file
-echo "" >> file
+echo "# Shell prompt layout" | tee -a ${HOME_DIR}/.bashrc
+echo $SHELL_LAYOUT | tee -a ${HOME_DIR}/.bashrc
+echo "" >> ${HOME_DIR}/.bashrc
 
 # Installing local rpm's
 cd ${HOME_DIR}/Downloads/
