@@ -19,7 +19,6 @@ read -p 'Is this a WSL2 machine [Y/y]? ' WSL
 read -p 'Please set your computer hostname: ' PC_HOSTNAME
 hostnamectl set-hostname ${PC_HOSTNAME}
 read -p 'Git Config username: ' GIT_USERNAME
-read -p 'Would you like to automatically git pull all branches on shell login? [Y/y] ' AUTO_GIT_PULL
 
 if [[ ! ${WORKPC} =~ [Yy] ]]; then
     # Comment the below if the user is different
@@ -79,7 +78,7 @@ mkdir -p ${HOME_DIR}/Downloads /mnt/NAS/Samis_folder ${HOME_DIR}/.config/termina
 $INSTALL_COMMAND update
 $INSTALL_COMMAND upgrade
 $INSTALL_COMMAND install -y cifs-utils openvpn facter ruby puppet python3.8 firefox git bash-completion vim pip npm curl wget telnet ShellCheck xclip subnetcalc \
-snapd grub-customizer terminator
+snapd grub-customizer dos2unix
 if [[ $? -ne 0 ]]; then
     echo "Could not download some/all of the packages, please check package manager history."
 fi
@@ -94,52 +93,7 @@ cp $SCRIPT_DIR/configs/ssh_config ${HOME_DIR}/.ssh/config
 ### Work Stuff ###
 ##################
 
-if [[ ${WORKPC} =~ [Yy] ]]; then
-    # .bash_aliases for work
-	### NOTE: ESCAPE ANY "$" SYMBOLS! ###
-    cat << EOF >> ${HOME_DIR}/.bash_aliases
-function torhost() {
-        TOR=\$(host \${1} | grep -oP '(?<=vlan).*' | cut -d '.' -f 2-)
-        TOR2=\${TOR::-1}
-        ssh \${TOR2}
-}
-function hosted() {
-	host \$1 | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | xargs host | awk '{print \$5}' | bash -ic "xargs whm"
-}
-alias pulldev='ssh -tq puppet02 "bash -ic pulldev"'
-alias pullstaging='ssh -tq puppet02 "bash -ic pullstaging"'
-function sslchk() {
-        firefox https://www.sslshopper.com/ssl-checker.html#hostname=\$1 &
-}
-function fixpup() {
-    echo "Doing puppet manifest checks - Lint and Parser..."; echo "If there is no output below, everything is fine."; echo "-------------------------------------------------"; puppet-lint \$1; puppet parser validate \$1;
-}
-function mxtoolbox() {
-        wslview "https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a\${1}&run=toolpage" &
-}
-function ssa() {
-        eval \$(ssh-agent -s)
-        ssh-add ~/.ssh/id_rsa*
-}
-function foreman() {
-        wslview "https://puppet02.digitalpacific.com.au/hosts/\${1}/edit#params" &
-}
-function jira() {
-        wslview "https://hostopia-au.atlassian.net/browse/\${1}" &
-}
-function geopeeker() {
-        wslview "https://geopeeker.com/fetch/?url=\${1}" &
-}
-function pagerduty() {
-        wslview "https://digitalpacific.pagerduty.com/incidents/\${1}/timeline" &
-}
-EOF
-else
-    # If not a work PC...
-    # VPN to connect to work network -> https://sslvpn01.digitalpacific.com.au:942/?src=connect
-    cat << EOF >> ${HOME_DIR}/.bash_aliases
-alias ovpn='sudo openvpn --config ~/work/hostopia.ovpn &'
-EOF
+if [[ ! ${WORKPC} =~ [Yy] ]]; then
     # Downloading files from NAS
     mount -t cifs -o username=${NAS_USER},password=${NAS_PASS},vers=1.0 //10.0.0.3/Samis_Folder /mnt/NAS/Samis_folder/
     if [[ $? -ne 0 ]]; then
@@ -267,55 +221,10 @@ EOF
     touch ${HOME_DIR}/.bash_aliases
 fi
 
-# .bashrc
-cat << EOF >> ${HOME_DIR}/.bashrc
-
-# SSH Stuff
-pgrep ssh-agent &> /dev/null || eval \`ssh-agent\`
-ssh-add ~/.ssh/sami-openssh-private-key.ppk &> /dev/null
-ssh-add ~/.ssh/SShakir-openssh-private-key &> /dev/null
-
-EOF
-
 # If this is running in WSL2, add the following ssh-agent code to .bashrc instead:
 if [[ ${WSL} =~ [Yy] ]]; then
-	cat << EOF >> ${HOME_DIR}/.bashrc
-# SSH Stuff
-pkill ssh-agent
-if ! pgrep ssh-agent > /dev/null; then
-  rm -f /tmp/ssh-auth-sock
-  eval "\$(ssh-agent -s -a /tmp/ssh-auth-sock)"
-  ssh-add ~/.ssh/id_rsa
-  ssh-add ~/.ssh/id_rsa_work
-else
-  export SSH_AUTH_SOCK=/tmp/ssh-auth-sock
-fi
-EOF
 	sed -i "s/LANG=.*/LANG=en_US.UTF-8/" /etc/default/locale
 fi
-
-if [[ ${AUTO_GIT_PULL} =~ [Yy] ]]; then
-    # Comment the below if the user is different
-	cat <<-EOF >> ${HOME_DIR}/.bashrc
-for i in ~/git/*; do git -C ${i} pull; done &
-EOF
-fi
-
-# .bash_aliases
-cat << EOF >> ${HOME_DIR}/.bash_aliases
-alias hosts='sudo vim /etc/hosts'
-alias reslack='pkill slack && slack'
-alias gitpushall='echo -e "\n\$PWD\n------------------------\n" && git status && git add . && git commit -m "auto commit from \$(hostname)" && git push origin'
-alias gitpullall='echo -e "\n\$PWD\n------------------------\n" && git status && git pull'
-alias traceroute='sudo traceroute -I'
-alias fireth3cookie='(firefox -P th3cookie &> /dev/null &disown)'
-alias firework='(firefox -P work &> /dev/null &disown)'
-alias ss='sudo ss'
-alias systemctl='sudo systemctl'
-alias copy='xclip -sel clip'
-alias spotify='spotify &'
-alias python='python3.8'
-EOF
 
 . ${HOME_DIR}/.bash_aliases
 . ${HOME_DIR}/.bashrc
@@ -323,14 +232,6 @@ EOF
 ##############
 ### Others ###
 ##############
-
-# Shell prompt layout
-IFS='' read -r -d '' SHELL_LAYOUT <<'EOF'
-export PS1="[\[$(tput sgr0)\]\[\033[38;5;203m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;119m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]]\\$ \[$(tput sgr0)\]"
-EOF
-echo "# Shell prompt layout" | tee -a ${HOME_DIR}/.bashrc
-echo $SHELL_LAYOUT | tee -a ${HOME_DIR}/.bashrc
-echo "" >> ${HOME_DIR}/.bashrc
 
 # Installing local rpm's
 cd ${HOME_DIR}/Downloads/
@@ -374,12 +275,5 @@ fi
 
 sudo pip3 install requests
 sudo pip2 install requests
-wget https://git.io/v5Zww -O ${HOME_DIR}"/.config/terminator/plugins/terminator-themes.py"
-python2 ${HOME_DIR}/.config/terminator/plugins/terminator-themes.py
-python3 ${HOME_DIR}/.config/terminator/plugins/terminator-themes.py
-cp $SCRIPT_DIR/configs/terminator_config ${HOME_DIR}/.config/terminator/config
-echo "To activate terminator profiles, right click in terminator > preferences > plugins > Tick 'TerminatorThemes'."
-echo "See here for further instructions -> https://github.com/EliverLara/terminator-themes"
-echo "SPOILERS: I like the theme 'PaulMillr'."
 
 [[ -e /etc/ssh/ssh_config ]] && sudo sed -i '/HashKnownHosts/ s/yes$/no/' /etc/ssh/ssh_config

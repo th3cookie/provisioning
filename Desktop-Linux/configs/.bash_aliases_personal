@@ -1,0 +1,15 @@
+alias hosts='sudo vim /etc/hosts'
+alias reslack='pkill slack && slack'
+alias gitpushall='echo -e "\n$PWD\n------------------------\n" && git status && git add . && git commit -m "auto commit from $(hostname)" && git push origin'
+alias gitpullall='echo -e "\n$PWD\n------------------------\n" && git status && git pull'
+alias traceroute='sudo traceroute -I'
+alias fireth3cookie='(firefox -P th3cookie &> /dev/null &disown)'
+alias firework='(firefox -P work &> /dev/null &disown)'
+alias ss='sudo ss'
+alias systemctl='sudo systemctl'
+alias copy='xclip -sel clip'
+alias spotify='spotify &'
+alias python='python3.8'
+
+# Only if linux is the main OS
+alias ovpn='sudo openvpn --config ~/work/hostopia.ovpn &'
