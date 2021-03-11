@@ -3,17 +3,17 @@
 
 version: "3.7"
 
-############################# NETWORKS
+### NETWORKS
 
 networks:
   default:
     driver: bridge
 
-############################# SERVICES
+### SERVICES
 
 services:
 
-############################# FRONTENDS
+###### FRONTENDS
 
   portainer:
     image: portainer/portainer
@@ -66,7 +66,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
 
-############################# DNS
+###### DNS
   
 # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
   # pihole:
@@ -95,7 +95,7 @@ services:
   # cap_add:
   #   - NET_ADMIN
 
-############################# DATABASE
+###### DATABASE
 
   # mariadb:
   #   image: mariadb
@@ -215,7 +215,7 @@ services:
   #     VRKN_RADARR_1_GET_MISSING: "true"
   #     VRKN_RADARR_1_GET_MISSING_RUN_SECONDS: 300
 
-############################# DOWNLOADERS
+###### DOWNLOADERS
 
 # TransmissionBT - Torrent Downloader
 # ONLY ACCESSIBLE THROUGH https://domain.com/transmission/web/ if using PathPrefix
@@ -277,7 +277,7 @@ services:
       TRANSMISSION_DOWNLOAD_DIR: /downloads/completed
       TRANSMISSION_DOWNLOAD_QUEUE_SIZE: 50
   
-############################# PVRS
+###### PVRS
 
   # Radarr - Movie management
   # Set url_base in radarr settings if using PathPrefix
@@ -321,7 +321,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
   
-############################# MEDIA
+###### MEDIA
 
   # Plex - Media Server
   # Docker Run command:
@@ -393,7 +393,7 @@ services:
   #     SECTION_MAPS: ${SYN_PLEX}/${SYN_PLEX_HOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_HOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_TVSHOWS} ${NUC_PLEX}/${NUC_PLEX_TVSHOWS} | ${SYN_PLEX}/${SYN_PLEX_BOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_BOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_KOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_KOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_TOLLYWOOD} ${NUC_PLEX}/${NUC_PLEX_TOLLYWOOD} | ${SYN_PLEX}/${SYN_PLEX_DOCMOVIES} ${NUC_PLEX}/${NUC_PLEX_DOCMOVIES} | ${SYN_PLEX}/${SYN_PLEX_DOCSHOWS} ${NUC_PLEX}/${NUC_PLEX_DOCSHOWS} | ${SYN_PLEX}/${SYN_PLEX_KIDSMOVIES} ${NUC_PLEX}/${NUC_PLEX_KIDSMOVIES} | ${SYN_PLEX}/${SYN_PLEX_INTERNATIONAL} ${NUC_PLEX}/${NUC_PLEX_INTERNATIONAL}
   #   restart: unless-stopped
 
-############################# MEDIA FILE MANAGEMENT
+###### MEDIA FILE MANAGEMENT
 
   # Bazarr - Subtitle Management
   bazarr:
