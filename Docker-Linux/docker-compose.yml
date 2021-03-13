@@ -364,24 +364,24 @@ services:
       PLEX_GID: ${PGID}
       ADVERTISE_IP: http://${SERVER_IP}:${PLEX_PORT}/
 
-  # Tautulli - Previously PlexPy. Plex statistics and monitoring
+  # Tautulli - Plex statistics and monitoring
   # Set HTTP Root in Tautulli settings if using PathPrefix
-  # tautulli:
-  #   image: linuxserver/tautulli
-  #   container_name: tautulli
-  #   hostname: tautulli
-  #   restart: unless-stopped
-  #   networks:
-  #     - default
-  #   ports:
-  #     - ${TAUTULLI_PORT}:8181
-  #   volumes:
-  #     - ${USERDIR}/docker/tautulli/config:/config
-  #     - ${USERDIR}/docker/tautulli/logs:/logs:ro
-  #   environment:
-  #     PUID: ${PUID}
-  #     PGID: ${PGID}
-  #     TZ: ${TZ}
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli
+    container_name: tautulli
+    hostname: tautulli
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - ${TAUTULLI_PORT}:8181
+    volumes:
+      - ${USERDIR}/docker/tautulli/config:/config
+      - ${USERDIR}/docker/tautulli/logs:/logs:ro
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
 
   # Plex-Sync - For Syncing watched status between plex servers
   # plex-sync:
